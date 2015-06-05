@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript">
+function set_openid(openid,pr)
+{
+	u=openid.search('<username>')
+	if (u != -1){
+		//openid requires username
+		user = prompt('Enter your ' + pr + ' username:')
+		openid = openid.substr(0,u) + user
+	
+	}
+	form = document.forms['login'];
+	form.elements['openid'].value = openid
+
+}
+</script>
+<h1>Sign In</h1>
+<form action="" method="post" name="login">
+	{{ form.hidden_tag() }}
+	<!-- template argument for CSRF prevention needs to be in there -->
+	<p>
+		Please enter your OpenID, or select one of the providers below:<br>
+		<!-- form.openid is from forms.py -->
+		{{ form.openid(size=80) }}<br>
+		<!-- errors for validators are in the following location form.field_name.errors -->
+		{% for error in form.openid.errors %}
+			<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}<br>
+		|{% for pr in providers %}
+			<a href="javascript:set_openid('{{ pr.url}}', '{{ pr.name }}')">{{ pr.name }} </a> |
+		{% endfor %}
+			<br>Please enter any note:<br>
+			{{ form.note(size=60)}}
+	</p>
+	<p>{{ form.remember_me }} Remember Me</p>
+	<p><input type="submit" value="Sign in"></p>
+</form>
+{% endblock %}

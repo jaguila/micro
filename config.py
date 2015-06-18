@@ -8,3 +8,12 @@ OPENID_PROVIDERS = [
 	{'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
 	{'name': 'MyopenID', 'url': 'https://www.myopenid.com'}
 ]
+
+import os
+#gets the full pathname of the file . Note:__file__ pathname of the file calling os
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+#creates the database in the current directory of config file make sure triple ///
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+#creates a new folder
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
